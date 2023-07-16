@@ -4,35 +4,34 @@
 SELECT Name,
        AlbumID
 FROM Tracks
-WHERE AlbumId IN (SELECT AlbumId
-    FROM Albums
-    WHERE Title = "Californication");
+WHERE AlbumId IN (SELECT AlbumId 
+                  FROM Albums 
+                  WHERE Title = 'Californication');
     
 ------------------------------------------------------------------------------------
 -- Q2) Find the total number of invoices for each customer along 
 -- with the customer's full name, city and email.
 
-SELECT FirstName,
-       LastName,
-       City,
-       Email,
-       COUNT(I.CustomerId) AS Invoices
-FROM Customers C INNER JOIN Invoices I
-ON C.CustomerId = I.CustomerId
-GROUP BY C.CustomerId
+SELECT C.firstname, 
+       C.lastname, 
+       C.city, 
+       C.email, 
+       COUNT(I.CustomerId ) AS Invoices
+FROM Customers C LEFT JOIN Invoices I
+ON C.CustomerId == I.CustomerId 
+GROUP BY C.CustomerId;
 
 ------------------------------------------------------------------------------------
 -- Q3) Retrieve the track name, album, artist, and trackID for 
 -- all the albums.
 
-SELECT Tracks.Name,
-       A.Name AS Artist,
-       Albums.Title AS Album,
-       Tracks.TrackId
-FROM ((Tracks INNER JOIN Albums
-ON Tracks.AlbumId = Albums.AlbumId)
-INNER JOIN Artists A
-ON A.ArtistId = Albums.ArtistId); 
+SELECT T.Name,
+       T.TrackId, 
+       T.AlbumId, 
+       A.ArtistId, 
+       A.Title
+FROM Tracks T INNER JOIN Albums A
+ON A.AlbumId = T.AlbumId
 
 ------------------------------------------------------------------------------------
 -- Q4) Retrieve a list with the managers last name, and the last 
@@ -46,14 +45,12 @@ ON E.ReportsTo = M.EmployeeID
 ------------------------------------------------------------------------------------
 -- Q5) Find the name and ID of the artists who do not have albums.
 
-SELECT Name AS Artist,
-       Artists.ArtistId,
-       Albums.Title AS Album
-FROM Artists
-LEFT JOIN Albums
-ON Artists.ArtistId = Albums.ArtistId
-WHERE Album IS NULL
-
+SELECT A.Name, 
+       A.ArtistId
+FROM Artists A
+Left JOIN Albums Al
+ON A.ArtistId = Al.ArtistId
+WHERE Al.AlbumId IS NULL
 ------------------------------------------------------------------------------------
 -- Q6) Use a UNION to create a list of all the employee's & 
 -- customer's first names and last names ordered by the last
