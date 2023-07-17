@@ -56,24 +56,22 @@ WHERE Al.AlbumId IS NULL
 -- customer's first names and last names ordered by the last
 -- name in descending order.
 
-SELECT FirstName,
-       LastName
+SELECT FirstName, lastName
 FROM Employees
 UNION
-SELECT FirstName,
-       LastName
+SELECT FirstName, lastName
 FROM Customers
-ORDER BY LastName DESC
+ORDER BY lastName DESC
 
 ------------------------------------------------------------------------------------
 -- Q7) See if there are any customers who have a different city
 -- listed in their billing city versus their customer city.
 
-SELECT C.FirstName,
+SELECT C.FirstName, 
        C.LastName,
        C.City AS CustomerCity,
        I.BillingCity
 FROM Customers C
 INNER JOIN Invoices I
 ON C.CustomerId = I.CustomerId
-WHERE CustomerCity != BillingCity
+WHERE  CustomerCity != BillingCity
